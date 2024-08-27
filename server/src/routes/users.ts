@@ -94,4 +94,12 @@ export const authenticateToken = (
   }
 };
 
+router.get(
+  "/validate-token",
+  authenticateToken,
+  (req: AuthenticatedRequest, res: Response) => {
+    res.status(200).json({ valid: true });
+  }
+);
+
 export default router;
