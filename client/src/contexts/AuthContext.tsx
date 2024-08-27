@@ -28,12 +28,36 @@ export const AuthProvider: FC<AuthProviderProps> = ({ children }) => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const storedToken = localStorage.getItem("token");
-    if (storedToken) {
-      setIsLoggedIn(true);
-      setToken(storedToken);
-    }
-    setIsLoading(false);
+    const validateToken = async (storedToken: string) => {
+      try {
+        const response = await fetch('/api/validate-token', {
+          method: 'GET',
+          headers: {
+            'Authorization': `Bearer ${storedToken}`
+          }
+        });
+        return response.ok;
+      } catch (error) {
+        console.error('Token validation error:', error);
+        return false;
+      }
+    };
+
+    const initializeAuth = async () => {
+      const storedToken = localStorage.getItem("token");
+      if (storedToken) {
+        const isValid = await validateToken(storedToken);
+        if (isValid) {
+          setIsLoggedIn(true);
+          setToken(storedToken);
+        } else {
+          localStorage.removeItem("token");
+        }
+      }
+      setIsLoading(false);
+    };
+
+    initializeAuth();
   }, []);
 
   const login = (newToken: string) => {
