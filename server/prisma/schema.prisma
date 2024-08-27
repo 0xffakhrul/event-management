@@ -23,6 +23,7 @@ model User {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   events Event[]
+  orders Order[]
 }
 
 model Event {
@@ -37,4 +38,18 @@ model Event {
   url String?
   organizer User @relation(fields: [organizerId], references: [id])
   organizerId String
+  orders Order[]
+}
+
+model Order {
+  id String @id @default(uuid())
+  user User @relation(fields: [userId], references: [id])
+  userId String
+  event Event @relation(fields: [eventId], references: [id])
+  eventId String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId])
+  @@index([eventId])
 }

@@ -2,6 +2,7 @@ import express, { Request, Response } from "express";
 import { PrismaClient } from "@prisma/client";
 import users, { authenticateToken } from "./routes/users";
 import events from "./routes/events";
+import orders from "./routes/orders";
 import { AuthenticatedRequest } from "./types";
 import cors from "cors";
 
@@ -22,6 +23,7 @@ app.listen(PORT, () => {
 
 app.use("/users", users);
 app.use("/events", events);
+app.use("/orders", orders);
 
 app.get("/protected", authenticateToken, (req: AuthenticatedRequest, res) => {
   res.json({ message: "Protected route accessed", userId: req.userId });
