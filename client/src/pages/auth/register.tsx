@@ -88,7 +88,7 @@ export const Register = () => {
                   htmlFor="username"
                   className="block text-sm font-medium text-gray-700"
                 >
-                  username
+                  Username
                 </label>
                 <div className="mt-1">
                   <input
@@ -108,7 +108,7 @@ export const Register = () => {
                   htmlFor="firstName"
                   className="block text-sm font-medium text-gray-700"
                 >
-                  firstName
+                  First Name
                 </label>
                 <div className="mt-1">
                   <input
@@ -128,7 +128,7 @@ export const Register = () => {
                   htmlFor="lastName"
                   className="block text-sm font-medium text-gray-700"
                 >
-                  lastName
+                  Last Name
                 </label>
                 <div className="mt-1">
                   <input
@@ -148,7 +148,7 @@ export const Register = () => {
                   type="submit"
                   className="flex w-full justify-center rounded-md border border-transparent bg-violet-600 py-2 px-4 text-sm font-extrabold text-white shadow-sm hover:bg-violet-500 focus:outline-none focus:ring-2 focus:ring-offset-2"
                 >
-                  Sign in
+                  Register
                 </button>
               </div>
             </form>

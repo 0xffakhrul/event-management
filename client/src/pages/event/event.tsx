@@ -2,10 +2,14 @@ import { useParams } from "react-router-dom";
 import { useGetEventById } from "../../api/event";
 import { format } from "date-fns";
 import { Calendar, MapPin } from "lucide-react";
+import { useCreateOrder, useGetOrdersByUser } from "../../api/order";
 
 export const Event = () => {
   const { id } = useParams<{ id: string }>();
   const { data: event, isLoading, error } = useGetEventById(id ?? "");
+  const { data: userOrders, isLoading: isLoadingOrders } = useGetOrdersByUser();
+
+  const createOrderMutation = useCreateOrder();
 
   const formattedStartDate = (startDate: Date) => {
     return format(startDate, "E, LLL d yyyy,  p");
@@ -14,7 +18,23 @@ export const Event = () => {
     return format(endDate, "E, LLL d yyyy,  p");
   };
 
-  if (isLoading) {
+  const handleJoinEvent = () => {
+    if (event) {
+      createOrderMutation.mutate(event.id, {
+        onSuccess: () => {
+          console.log("Successfully joined the event");
+        },
+        onError: (error) => {
+          console.error("Error joining the event:", error);
+        },
+      });
+    }
+  };
+
+  //The some() method of Array instances tests whether at least one element in the array passes the test implemented by the provided function. It returns true if, in the array, it finds an element for which the provided function returns true; otherwise it returns false. It doesn't modify the array.
+  const hasUserJoined = userOrders?.some((order) => order.eventId === id);
+
+  if (isLoading || isLoadingOrders) {
     return <div>Loading...</div>;
   }
 
@@ -63,8 +83,18 @@ export const Event = () => {
             )}
           </p> */}
         </div>
+        <button
+          onClick={handleJoinEvent}
+          disabled={hasUserJoined || isLoading}
+          className={`bg-violet-600 text-white px-4 py-2 rounded-md transition-colors ${
+            hasUserJoined
+              ? "opacity-50 cursor-not-allowed"
+              : "hover:bg-violet-700"
+          }`}
+        >
+          {hasUserJoined ? "You have already joined this event" : "Join Event"}
+        </button>
       </div>
     </div>
   );
 };
-
