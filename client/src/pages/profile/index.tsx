@@ -25,9 +25,7 @@ export const Profile = () => {
   };
 
   const handleNavigateToOrders = (eventId: string) => {
-    console.log("handleNavigateToOrders called with eventId:", eventId);
     navigate(`/event/${eventId}/orders`);
-    console.log("Navigation attempted");
   };
 
   const handleDeleteEvent = (eventId: string) => {
@@ -38,11 +36,11 @@ export const Profile = () => {
   return (
     <div>
       <h2 className="font-black text-2xl pb-6">Joined Events</h2>
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
         {joinedEvents?.map((event: any) => (
           <div
             className="shadow relative overflow-hidden rounded-lg group"
-            onClick={() => handleEventClick(event.id)}
+            onClick={() => handleEventClick(event.event.id)}
           >
             <p className="absolute inset-0 z-10">
               <span className="sr-only">View</span>
@@ -76,7 +74,7 @@ export const Profile = () => {
       </div>
 
       <h2 className="font-black text-2xl py-6">Organized Events</h2>
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
         {userEvents?.map((event: Event) => (
           <div
             key={event.id}
@@ -95,18 +93,22 @@ export const Profile = () => {
               className="object-cover w-full transition-all group-hover:scale-105 aspect-video"
             />
             <div
-              className="bg-white w-8 h-16 rounded-lg absolute top-3 right-3 z-20 flex flex-col items-center justify-center cursor-pointer"
+              className="bg-white w-8 h-20 rounded-lg absolute top-3 right-3 z-20 flex flex-col items-center justify-center cursor-pointer gap-2"
               onClick={(e) => {
                 e.stopPropagation();
               }}
             >
               <SquarePen
-                className="w-4 h-4 mb-1 text-violet-500"
+                className="w-4 h-4  text-violet-500"
                 onClick={() => handleNavigateToUpdate(event.id)}
               />
               <Trash
-                className="w-4 h-4 mt-2 text-red-500"
+                className="w-4 h-4  text-red-500"
                 onClick={() => handleDeleteEvent(event.id)}
+              />
+              <User
+                className="w-4 h-4  text-green-500"
+                onClick={() => handleNavigateToOrders(event.id)}
               />
             </div>
             <div className="p-4 bg-background space-y-2 flex flex-col justify-end">
@@ -128,7 +130,7 @@ export const Profile = () => {
                 </p>
               </div>
             </div>
-            <div
+            {/* <div
               onClick={(e) => {
                 e.stopPropagation();
                 handleNavigateToOrders(event.id);
@@ -137,7 +139,7 @@ export const Profile = () => {
             >
               <p>Attendees List</p>
               <ArrowRight className="w-4 h-4" />
-            </div>
+            </div> */}
           </div>
         ))}
       </div>
